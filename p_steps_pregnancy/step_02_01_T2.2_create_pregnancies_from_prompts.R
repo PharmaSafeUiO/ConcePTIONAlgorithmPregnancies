@@ -304,12 +304,12 @@ if (this_datasource_has_prompt) {
       
       dataset_pregnancies2[pregnancy_end_date==DATEENDPREGNANCY & 
                              TYPE%in%unlist(dictonary_of_itemset_pregnancy_this_datasource[["UNK"]]) & 
-                             (GESTAGE_FROM_DAPS_CRITERIA_DAYS/7)>22 
+                             GESTAGE_FROM_DAPS_CRITERIA_DAYS >= 154   # [UiO patch] was /7 > 22 
                            ,type_of_pregnancy_end:="SB"]
       
       dataset_pregnancies2[pregnancy_end_date==DATEENDPREGNANCY & 
                              TYPE%in%unlist(dictonary_of_itemset_pregnancy_this_datasource[["UNK"]]) & 
-                             (GESTAGE_FROM_DAPS_CRITERIA_DAYS/7)<=22
+                             GESTAGE_FROM_DAPS_CRITERIA_DAYS < 154    # [UiO patch] was /7 <= 22
                            ,type_of_pregnancy_end:="SA"]
       
       dataset_pregnancies2[pregnancy_end_date==DATEENDPREGNANCY & 

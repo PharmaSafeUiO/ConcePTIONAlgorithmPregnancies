@@ -14,7 +14,8 @@ if(this_datasource_has_conceptsets){
     
     concept_filtered <- concept_tmp[0]
     for (coding_sys in  c("Free_text", "ICD10CM", "ICD10GM", "ICD10", "ICD9CM",
-                             "ICD9", "ICPC", "ICPC2P", "SNOMED", "MEDCODEID", "ICD9PROC")) {
+                             "ICD9", "ICPC", "ICPC2P", "SNOMED", "MEDCODEID", "ICD9PROC",
+                             "ICPC2", "ICPC2B")) {   # [UiO patch] Norwegian ICPC-2 labels
       
       #concept_set_pregnancy[concept_set_pregnancy %notin% names(concept_set_codes_pregnancy)]
       
@@ -22,8 +23,15 @@ if(this_datasource_has_conceptsets){
       code_list_tmp_no_dot <- gsub("\\.", "", code_list_tmp)
       
       if(concept_set_domains[[new_concept_name]] == "Diagnosis"){
+        if (coding_sys %in% c("ICPC2", "ICPC2B")) {
+          # [UiO patch] ICPC-2/ICPC-2B: match on the 3-character parent code (W82, W82.0001 -> W82)
+          # [UiO patch] case and separators ignored (" w82", "W 82", "w82.0001" -> W82)
+          concept_tmp_filtered <- concept_tmp[event_record_vocabulary == coding_sys &
+                                                toupper(substr(gsub("[^A-Za-z0-9]", "", codvar), 1, 3)) %in% toupper(code_list_tmp_no_dot)]
+        } else {
         concept_tmp_filtered <- concept_tmp[event_record_vocabulary == coding_sys & 
                                               (codvar %in% code_list_tmp_no_dot | codvar %in% code_list_tmp)]
+        }
         #code_descendent <- unique(concept_tmp[event_record_vocabulary == coding_sys & codvar %notin% code_list_tmp_no_dot, codvar])
         code_descendent <- unique(concept_tmp[codvar %notin% code_list_tmp_no_dot, codvar])
       }

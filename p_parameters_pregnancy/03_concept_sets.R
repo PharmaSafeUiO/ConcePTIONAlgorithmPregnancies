@@ -133,6 +133,30 @@ if(this_datasource_has_conceptsets){
   
   concept_set_codes_pregnancy[["Ongoingpregnancy"]][["Italian code system for exemption"]] <- c("997M50", "M50")
   
+  ##------------------------------------------------------------------------------
+  #   [UiO patch] UOSL (Norway): primary-care (KUHR) ICPC-2 records are labelled
+  #   "ICPC2" or "ICPC2B" (ICPC-2B extension codes, e.g. W82.0001) in the ConcePTION CDM,
+  #   whereas the code lists hold ICPC-2 codes under "ICPC" and "ICPC2EENG" only, so in
+  #   the base version no ICPC-2-coded KUHR record was retrieved. Copy the 3-character ICPC-2
+  #   codes of every concept set to the labels used in the CDM. Country-specific extended
+  #   codes (ICPC2P) are not copied, because their parent codes would change the meaning
+  #   of the "possible" lists. ICPC2/ICPC2B records are matched on their 3-character
+  #   parent code in step_01_04.
+  ##------------------------------------------------------------------------------
+  if (exists("thisdatasource") && thisdatasource == "UOSL") {
+    for (cs_name in names(concept_set_codes_pregnancy)) {
+      icpc3 <- c(concept_set_codes_pregnancy[[cs_name]][["ICPC"]],
+                 concept_set_codes_pregnancy[[cs_name]][["ICPC2EENG"]])
+      icpc3 <- unique(substr(gsub(".", "", icpc3, fixed = TRUE), 1, 3))
+      icpc3 <- icpc3[nchar(icpc3) == 3]
+      if (length(icpc3) > 0) {
+        concept_set_codes_pregnancy[[cs_name]][["ICPC2"]]  <- icpc3
+        concept_set_codes_pregnancy[[cs_name]][["ICPC2B"]] <- icpc3
+      }
+    }
+    rm(cs_name, icpc3)
+  }
+  
   
   
   # concept_sets_of_start_of_pregnancy <- c("Gestation_less24","Gestation_24","Gestation_25_26","Gestation_27_28","Gestation_29_30"  ,"Gestation_31_32","Gestation_33_34","Gestation_35_36","Gestation_more37") 

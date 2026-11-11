@@ -1,5 +1,12 @@
 # ConcePTIONAlgorithmPregnancies
 
+> **This fork:** release `v6.1-a1f4ec3-uiopatched` is the ConcePTION pregnancy algorithm (branch `version_6` at
+> commit a1f4ec3, after release 6.1) with the changes used for the Norwegian linked health registries
+> (`UIO_PATCH.md`). Release `v6.1-a1f4ec3` is the unchanged base. The algorithm was developed by Claudia Bartolini,
+> Rosa Gini, Giorgio Limoncella, Olga Paoletti and Davide Messina; the changes of this fork are by Saeed Hayati and
+> Hedvig M.E. Nordeng. `UIO_PATCH.md` also gives the types of pregnancy end and how the release was run in the
+> comparison of pregnancy algorithms in Norwegian registry data.
+
 The **statistical analysis plan** for the ConcePTION algorithm pregnancies is available at this [link](https://docs.google.com/document/d/1HzmoAOi9x9CSRZdg5qCwEHTQqMvJSthZ/edit).
 
 The [wiki](https://github.com/ARS-toscana/ConcePTIONAlgorithmPregnancies/wiki) of this repository contains detailed information on how to use the script, and in particular how to set parameters to tailor it to a new data source.
